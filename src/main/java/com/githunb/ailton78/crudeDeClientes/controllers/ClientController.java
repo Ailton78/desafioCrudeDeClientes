@@ -29,5 +29,9 @@ public class ClientController {
         dto = service.insert(dto);
         return dto;
     }
+    @PutMapping(value = "/{id}")
+    public ClientDTO findById(@PathVariable Long id, @RequestBody ClientDTO dto){
+        return service.update(id, dto);
+    }
 
 }
