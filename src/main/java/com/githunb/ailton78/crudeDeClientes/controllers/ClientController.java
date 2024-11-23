@@ -30,8 +30,12 @@ public class ClientController {
         return dto;
     }
     @PutMapping(value = "/{id}")
-    public ClientDTO findById(@PathVariable Long id, @RequestBody ClientDTO dto){
+    public ClientDTO updade(@PathVariable Long id, @RequestBody ClientDTO dto){
         return service.update(id, dto);
+    }
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable Long id){
+        service.delete(id);
     }
 
 }
