@@ -1,15 +1,21 @@
 package com.githunb.ailton78.crudeDeClientes.dto;
 
 import com.githunb.ailton78.crudeDeClientes.entities.Client;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
 public class ClientDTO {
 
     private Long id;
+    @Size(min = 4, max = 30)
+    @NotBlank(message = "Campo Requerido")
     private String name;
     private String cpf;
     private Double income;
+    @PastOrPresent(message = "data invalida! não pode ser data futura.")
     private LocalDate birthDate;
     private Integer children;
 

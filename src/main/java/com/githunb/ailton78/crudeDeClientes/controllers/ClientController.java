@@ -2,6 +2,7 @@ package com.githunb.ailton78.crudeDeClientes.controllers;
 
 import com.githunb.ailton78.crudeDeClientes.dto.ClientDTO;
 import com.githunb.ailton78.crudeDeClientes.services.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,14 +30,14 @@ public class ClientController {
         return ResponseEntity.ok(dto);
     }
     @PostMapping
-    public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO dto){
+    public ResponseEntity<ClientDTO> insert(@Valid @RequestBody ClientDTO dto){
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ClientDTO> updade(@PathVariable Long id, @RequestBody ClientDTO dto){
+    public ResponseEntity<ClientDTO> updade(@PathVariable Long id,@Valid @RequestBody ClientDTO dto){
         dto =  service.update(id, dto);
         return ResponseEntity.ok(dto) ;
     }
