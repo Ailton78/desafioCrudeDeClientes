@@ -3,9 +3,13 @@ package com.githunb.ailton78.crudeDeClientes.controllers;
 import com.githunb.ailton78.crudeDeClientes.dto.ClientDTO;
 import com.githunb.ailton78.crudeDeClientes.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "clients")
@@ -15,27 +19,31 @@ public class ClientController {
     private ClientService service;
 
     @GetMapping(value = "/{id}")
-    public ClientDTO findById(@PathVariable Long id){
+    public ResponseEntity<ClientDTO> findById(@PathVariable Long id){
         ClientDTO dto = service.findById(id);
-        return dto;
+        return ResponseEntity.ok(dto);
     }
     @GetMapping
-    public List<ClientDTO> findAll(){
-        List<ClientDTO> dto = service.findAll();
-        return dto;
+    public ResponseEntity<Page<ClientDTO>>findAll(Pageable pageable){
+        Page<ClientDTO> dto = service.findAll(pageable);
+        return ResponseEntity.ok(dto);
     }
     @PostMapping
-    public ClientDTO insert(@RequestBody ClientDTO dto){
+    public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO dto){
         dto = service.insert(dto);
-        return dto;
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
     @PutMapping(value = "/{id}")
-    public ClientDTO updade(@PathVariable Long id, @RequestBody ClientDTO dto){
-        return service.update(id, dto);
+    public ResponseEntity<ClientDTO> updade(@PathVariable Long id, @RequestBody ClientDTO dto){
+        dto =  service.update(id, dto);
+        return ResponseEntity.ok(dto) ;
     }
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id){
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
